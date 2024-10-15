@@ -1,0 +1,12 @@
+# PR
+
+<!-- Add a short summary of the PR, outlining what or why it was created. Taiga tickets can be referenced as followsL TG-Ref-->
+
+## Check List
+
+<!-- Replace [ ] by [x] for each item completed or use the interactive github checkbox -->
+
+- [ ] New liquibase scripts do not cause conflicts.
+- [ ] Tests are up-to-date.
+- [ ] Code compiles and tests are not broken
+- [ ] Code is properly formatted according to googles java styling guide
