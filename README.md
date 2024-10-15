@@ -13,7 +13,7 @@ The **Campaign Tracker** is a web-based application designed to manage and track
 - **Time-Based Events**: Set events such as resource generation or automatic campaign advancements.
 
 ## **Technologies Used**
-- **Backend**: Spring Boot (Java 8)
+- **Backend**: Spring Boot (Java 21)
 - **Frontend**: AngularJS
 - **Database**: MySQL or PostgreSQL (with Hibernate JPA for ORM)
 - **Authentication**: Spring Security (JWT-based)
