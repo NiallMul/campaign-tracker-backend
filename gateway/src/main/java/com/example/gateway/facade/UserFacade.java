@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class UserFacade {
     private final UserServiceClient userServiceClient;
 
-    public Boolean createUser(final UserModel user) {
+    public UserModel createUser(final UserModel user) {
         return userServiceClient.createUser(user).getBody();
     }
 }
