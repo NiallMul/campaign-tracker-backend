@@ -17,8 +17,7 @@ public class UserGatewayController {
     private final UserFacade userFacade;
 
     @PostMapping
-    public ResponseEntity<Boolean> createUser(final @RequestBody UserModel user) {
-
+    public ResponseEntity<UserModel> createUser(final @RequestBody UserModel user) {
         return ResponseEntity.ok(userFacade.createUser(user));
     }
 }

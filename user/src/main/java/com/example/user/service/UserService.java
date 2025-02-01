@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    Boolean createUser(UserModel user);
+    UserModel createUser(UserModel user);
 }
