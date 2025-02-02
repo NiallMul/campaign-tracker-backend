@@ -13,4 +13,8 @@ public class UserFacade {
     public UserModel createUser(final UserModel user) {
         return userServiceClient.createUser(user).getBody();
     }
+
+    public Boolean authenticate(final UserModel user) {
+        return userServiceClient.authenticate(user).getBody();
+    }
 }

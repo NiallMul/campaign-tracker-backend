@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserServiceClient {
     @PostMapping
     ResponseEntity<UserModel> createUser(final @RequestBody UserModel user);
+
+    @PostMapping("/authenticate")
+    ResponseEntity<Boolean> authenticate(final @RequestBody UserModel user);
 }

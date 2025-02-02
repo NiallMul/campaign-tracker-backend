@@ -20,4 +20,9 @@ public class UserGatewayController {
     public ResponseEntity<UserModel> createUser(final @RequestBody UserModel user) {
         return ResponseEntity.ok(userFacade.createUser(user));
     }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<Boolean> authenticate(final @RequestBody UserModel user) {
+        return ResponseEntity.ok(userFacade.authenticate(user));
+    }
 }
