@@ -5,5 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    UserModel createUser(UserModel user);
+    UserModel createUser(final UserModel user);
+
+    Boolean authenticate(final String email, final String password);
 }

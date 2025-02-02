@@ -20,4 +20,9 @@ public class UserController implements UserServiceClient {
     public ResponseEntity<UserModel> createUser(final @RequestBody UserModel user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<Boolean> authenticate(final @RequestBody UserModel user) {
+        return ResponseEntity.ok(userService.authenticate(user.getUsername(), user.getPassword()));
+    }
 }

@@ -1,9 +1,8 @@
 package com.example.user.repository.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +24,9 @@ public class UserEntity {
     private UUID uid;
     private String firstName;
     private String lastName;
+    @Email
+    @NotBlank
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
 }

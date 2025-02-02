@@ -26,11 +26,30 @@ class UserApplicationTests {
 
     @Test
     void shouldReturnUser() {
-        UserModel user = generateUserModel();
+        UserModel user = generateUserModel("test1");
 
         user = postForObject(USER_SERVICE, user, UserModel.class);
 
         assertThat(user.getUuid()).isNotNull();
+    }
+
+    @Test
+    void shouldAuthenticateUser() {
+        UserModel user = generateUserModel("test2");
+        postForObject(USER_SERVICE, user, UserModel.class);
+
+        Boolean successFullAuthenticate = restTemplate.postForObject(USER_SERVICE + "/authenticate", user, Boolean.class);
+        assertThat(successFullAuthenticate).isTrue();
+    }
+
+    @Test
+    void shouldFailAuthenticateUser() {
+        UserModel user = generateUserModel("test3");
+        postForObject(USER_SERVICE, user, UserModel.class);
+
+        user.setPassword("wrongpsswrd");
+        Boolean successFullAuthenticate = restTemplate.postForObject(USER_SERVICE + "/authenticate", user, Boolean.class);
+        assertThat(successFullAuthenticate).isFalse();
     }
 
     private UserModel postForObject(String serviceUrl, UserModel requestObject, Class<UserModel> returnModel) {
@@ -42,7 +61,12 @@ class UserApplicationTests {
         return response.getBody();
     }
 
-    public UserModel generateUserModel() {
-        return UserModel.builder().firstName("test-user").lastName("test-user").password("pswrdd111").username("test@test.com").build();
+    public UserModel generateUserModel(String testSuffix) {
+        return UserModel.builder()
+                .firstName("user" + testSuffix)
+                .lastName("user" + testSuffix)
+                .password("pswrdd111")
+                .username(testSuffix + "@test.com")
+                .build();
     }
 }
