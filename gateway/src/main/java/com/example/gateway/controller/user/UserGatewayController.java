@@ -17,12 +17,12 @@ public class UserGatewayController {
     private final UserFacade userFacade;
 
     @PostMapping
-    public ResponseEntity<String> createUser(final @RequestBody UserModel user) {
+    public ResponseEntity<?> createUser(final @RequestBody UserModel user) {
         return ResponseEntity.ok(userFacade.createUser(user));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(final @RequestBody UserModel user) {
+    public ResponseEntity<?> authenticate(final @RequestBody UserModel user) {
         return ResponseEntity.ok(userFacade.authenticate(user));
     }
 }

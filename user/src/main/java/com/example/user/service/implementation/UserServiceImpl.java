@@ -28,16 +28,16 @@ public class UserServiceImpl implements UserService {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
         UserModel newUser = userMapper.entityToModel(userRepository.save(userMapper.modelToEntity(user)));
-        return jwtUtil.generateToken(newUser.getUsername());
+        return jwtUtil.generateToken(newUser.getPassword());
     }
 
     @Override
     public String authenticate(final String email, final String password) {
         Optional<UserEntity> userEntity = userRepository.findByEmail(email);
         if (userExistsAndPasswordValid(password, userEntity)) {
-            return jwtUtil.generateToken(email);
+            return jwtUtil.generateToken(userEntity.get().getPassword());
         }
-        return new EntityNotFoundException("User not found").toString();
+        throw new EntityNotFoundException("User not found");
     }
 
     private boolean userExistsAndPasswordValid(String password, Optional<UserEntity> userEntity) {

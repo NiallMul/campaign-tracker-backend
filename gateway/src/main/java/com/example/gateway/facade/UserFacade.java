@@ -5,16 +5,18 @@ import com.example.model.UserModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class UserFacade {
     private final UserServiceClient userServiceClient;
 
-    public String createUser(final UserModel user) {
+    public Object createUser(final UserModel user) {
         return userServiceClient.createUser(user).getBody();
     }
 
-    public String authenticate(final UserModel user) {
+    public Object authenticate(final UserModel user) {
         return userServiceClient.authenticate(user).getBody();
     }
 }
