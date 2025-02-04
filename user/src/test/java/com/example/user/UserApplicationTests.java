@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -27,37 +30,44 @@ class UserApplicationTests {
     @Test
     void shouldReturnUser() {
         UserModel user = generateUserModel("test1");
-
-        user = postForObject(USER_SERVICE, user, UserModel.class);
-
-        assertThat(user.getUuid()).isNotNull();
+        Object token = postForObject(USER_SERVICE, user, Object.class);
+        assertThat(token).isNotNull();
     }
 
     @Test
     void shouldAuthenticateUser() {
         UserModel user = generateUserModel("test2");
-        postForObject(USER_SERVICE, user, UserModel.class);
 
-        Boolean successFullAuthenticate = restTemplate.postForObject(USER_SERVICE + "/authenticate", user, Boolean.class);
-        assertThat(successFullAuthenticate).isTrue();
+        Map<?, ?> bearerToken = (Map<?, ?>) postForObject(USER_SERVICE, user, Object.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + bearerToken.get("Bearer"));
+        HttpEntity<UserModel> entity = new HttpEntity<>(user, headers);
+
+        Object successFullAuthenticate = restTemplate.postForObject(USER_SERVICE + "/authenticate", entity, Object.class);
+        assertThat(successFullAuthenticate.toString().contains("Bearer")).isTrue();
     }
 
     @Test
     void shouldFailAuthenticateUser() {
         UserModel user = generateUserModel("test3");
-        postForObject(USER_SERVICE, user, UserModel.class);
+        Map<?, ?> bearerToken = (Map<?, ?>) postForObject(USER_SERVICE, user, Object.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + bearerToken.get("Bearer"));
+        HttpEntity<UserModel> entity = new HttpEntity<>(user, headers);
 
         user.setPassword("wrongpsswrd");
-        Boolean successFullAuthenticate = restTemplate.postForObject(USER_SERVICE + "/authenticate", user, Boolean.class);
-        assertThat(successFullAuthenticate).isFalse();
+        Object successFullAuthenticate = restTemplate.postForObject(USER_SERVICE + "/authenticate", user, Object.class);
+        assertThat(successFullAuthenticate).isNull();
     }
 
-    private UserModel postForObject(String serviceUrl, UserModel requestObject, Class<UserModel> returnModel) {
+    private Object postForObject(String serviceUrl, UserModel requestObject, Class<?> returnModel) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
 
         HttpEntity<UserModel> request = new HttpEntity<>(requestObject, headers);
-        ResponseEntity<UserModel> response = restTemplate.postForEntity(serviceUrl, request, returnModel);
+        ResponseEntity<?> response = restTemplate.postForEntity(serviceUrl, request, returnModel);
         return response.getBody();
     }
 

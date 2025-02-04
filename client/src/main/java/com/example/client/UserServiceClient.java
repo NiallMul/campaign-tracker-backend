@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "user-service", url = "localhost:8081/user")
 public interface UserServiceClient {
     @PostMapping
-    ResponseEntity<String> createUser(final @RequestBody UserModel user);
+    ResponseEntity<?> createUser(final @RequestBody UserModel user);
 
     @PostMapping("/authenticate")
-    ResponseEntity<String> authenticate(final @RequestBody UserModel user);
+    ResponseEntity<?> authenticate(final @RequestBody UserModel user);
 }
